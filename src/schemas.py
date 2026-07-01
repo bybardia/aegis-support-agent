@@ -42,6 +42,10 @@ class JudgeResult(BaseModel):
     risk_level: RiskLevel = Field(..., description="Final risk level after judging.")
     trust_score: int = Field(..., ge=0, le=100, description="Overall confidence score.")
     decision: Decision = Field(..., description="Final routing decision.")
+    evidence: list[str] = Field(
+    default_factory=list,
+    description="Evidence used to justify the judge decision."
+)
     reason: str = Field(..., description="Reason for the decision.")
 
 
