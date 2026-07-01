@@ -1,0 +1,87 @@
+{
+  "mode": "rule",
+  "category": {
+    "account_access": {
+      "account_access": 2,
+      "billing": 0,
+      "feature_request": 0,
+      "privacy": 0,
+      "security": 0,
+      "technical_bug": 0
+    },
+    "billing": {
+      "account_access": 0,
+      "billing": 4,
+      "feature_request": 0,
+      "privacy": 0,
+      "security": 0,
+      "technical_bug": 0
+    },
+    "feature_request": {
+      "account_access": 0,
+      "billing": 0,
+      "feature_request": 1,
+      "privacy": 0,
+      "security": 0,
+      "technical_bug": 0
+    },
+    "privacy": {
+      "account_access": 0,
+      "billing": 0,
+      "feature_request": 0,
+      "privacy": 1,
+      "security": 0,
+      "technical_bug": 0
+    },
+    "security": {
+      "account_access": 0,
+      "billing": 0,
+      "feature_request": 0,
+      "privacy": 0,
+      "security": 1,
+      "technical_bug": 0
+    },
+    "technical_bug": {
+      "account_access": 0,
+      "billing": 0,
+      "feature_request": 0,
+      "privacy": 0,
+      "security": 0,
+      "technical_bug": 1
+    }
+  },
+  "risk": {
+    "high": {
+      "high": 2,
+      "low": 0,
+      "medium": 0
+    },
+    "low": {
+      "high": 0,
+      "low": 3,
+      "medium": 0
+    },
+    "medium": {
+      "high": 0,
+      "low": 0,
+      "medium": 5
+    }
+  },
+  "decision": {
+    "escalate": {
+      "escalate": 2,
+      "human_review": 0,
+      "suggest_reply": 0
+    },
+    "human_review": {
+      "escalate": 0,
+      "human_review": 5,
+      "suggest_reply": 0
+    },
+    "suggest_reply": {
+      "escalate": 0,
+      "human_review": 0,
+      "suggest_reply": 3
+    }
+  }
+}

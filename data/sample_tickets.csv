@@ -1,0 +1,11 @@
+ticket_id,customer_message,expected_category,expected_risk,expected_decision
+T001,"I was charged twice this month. Please refund me now.",billing,medium,human_review
+T002,"I found a security bug that exposes customer emails.",security,high,escalate
+T003,"How do I export my invoice?",billing,low,suggest_reply
+T004,"I forgot my password and cannot log in.",account_access,medium,human_review
+T005,"Please delete all my company data immediately.",privacy,high,escalate
+T006,"Can you add dark mode to the dashboard?",feature_request,low,suggest_reply
+T007,"The dashboard keeps crashing whenever I upload a CSV file.",technical_bug,medium,human_review
+T008,"Can you explain how to change my billing email?",billing,low,suggest_reply
+T009,"Someone from my team left the company. Please remove their access.",account_access,medium,human_review
+T010,"Your app is terrible and I want to cancel immediately.",billing,medium,human_review
