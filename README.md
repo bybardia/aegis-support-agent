@@ -133,8 +133,7 @@ Creates an internal note for a human support agent when the ticket requires revi
 
 - multi-agent workflow
 - MCP-style tool use
-- A2A-style structured message passing
-- policy grounding
+- A2A-inspired structured communication using Pydantic schemas
 - reflection and self-correction
 - evidence-based judging
 - trust re-scoring
@@ -163,13 +162,13 @@ In a production system, this could be replaced with a real MCP server connected 
 
 ---
 
-## A2A-style Structured Communication
+## A2A-inspired Structured Communication
 
-Aegis passes structured messages between agents using Pydantic schemas:
+Aegis uses A2A-inspired structured communication by passing typed Pydantic messages between workflow stages:
 
 TriageResult → DraftResult → JudgeResult → FinalResult
 
-This makes the workflow easier to debug, evaluate, and extend.
+This approach makes the workflow easier to debug, evaluate, and extend while maintaining clear contracts between agents.
 
 ---
 
