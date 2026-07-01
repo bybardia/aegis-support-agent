@@ -134,3 +134,29 @@ def create_escalation_note(customer_message: str, triage: TriageResult, judge: J
         "Human agent should verify account-specific facts before promising any action."
     )
     return EscalationResult(escalation_note=note)
+
+def revise_response(
+    customer_message: str,
+    triage: TriageResult,
+    draft: DraftResult,
+    judge: JudgeResult,
+    policy: str,
+) -> DraftResult:
+    """
+    Reflection agent that revises a draft response when
+    trust score is below the acceptable threshold.
+    """
+
+    revised_response = draft.response
+
+    if judge.trust_score < 70:
+
+        revised_response += (
+            "\n\nBefore any action can be confirmed, "
+            "additional verification may be required."
+        )
+
+    return DraftResult(
+        response=revised_response,
+        revision_count=draft.revision_count + 1,
+    )
