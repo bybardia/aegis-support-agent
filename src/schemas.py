@@ -25,8 +25,15 @@ class TriageResult(BaseModel):
 
 
 class DraftResult(BaseModel):
-    response: str = Field(..., description="Draft response to the customer.")
+    response: str = Field(
+        ...,
+        description="Draft response to the customer."
+    )
 
+    revision_count: int = Field(
+        default=0,
+        description="Number of revisions made by the reflection loop."
+    )
 
 class JudgeResult(BaseModel):
     helpfulness: int = Field(..., ge=1, le=10, description="How helpful the draft is.")
