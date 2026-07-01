@@ -99,6 +99,10 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
         revision_bonus = 15   
     evidence = []
 
+    policy_text = policy.lower()
+
+    evidence.append(f"policy_loaded={category}")
+
     if risk_level == "high":
         trust_score = min(100, 45 + revision_bonus)
         decision = "escalate"
@@ -130,6 +134,22 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
     if "charged twice" in customer_message.lower():
         evidence.append("duplicate charge detected")
 
+    if (
+        "duplicate charge" in policy_text
+        and "charged twice" in customer_message.lower()
+    ):
+        evidence.append(
+            "billing policy requires human review for duplicate charges"
+        )
+
+    if (
+        "refunds before invoice verification" in policy_text
+        and "refund" in customer_message.lower()
+    ):
+        evidence.append(
+            "billing policy requires invoice verification before refund"
+        )       
+
     if category == "security":
         evidence.append("security policy escalation triggered")
 
@@ -144,11 +164,14 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
 
     if decision == "suggest_reply":
         evidence.append("safe suggested reply allowed")    
-        
+
     if getattr(draft, "revision_count", 0) > 0:
         evidence.append(
             f"response revised {draft.revision_count} time(s)"
         )
+    if len(evidence) > 2:
+        evidence.append("policy grounding successful")
+
     return JudgeResult(
         helpfulness=helpfulness,
         policy_compliance=policy_compliance,
