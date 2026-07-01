@@ -4,7 +4,13 @@ import pandas as pd
 from rich.console import Console
 from rich.panel import Panel
 
-from src.agents import triage_ticket, draft_response, judge_response, create_escalation_note
+from src.agents import (
+    triage_ticket,
+    draft_response,
+    judge_response,
+    create_escalation_note,
+    revise_response,
+)
 from src.gemini_agents import gemini_triage_ticket, gemini_draft_response, gemini_judge_response, gemini_create_escalation_note
 from src.tools import policy_lookup
 from src.schemas import FinalResult
@@ -29,6 +35,24 @@ def process_ticket(ticket_id: str, customer_message: str, mode: str = "rule") ->
     policy = policy_lookup(triage.category)
     draft = draft_func(customer_message, triage, policy)
     judge = judge_func(customer_message, triage, draft, policy)
+        # Reflection Loop
+
+    if judge.trust_score < 70:
+
+        draft = revise_response(
+            customer_message,
+            triage,
+            draft,
+            judge,
+            policy,
+        )
+
+        judge = judge_func(
+            customer_message,
+            triage,
+            draft,
+            policy,
+        )
 
     escalation_note = None
     if judge.decision != "suggest_reply":
