@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 from pydantic import BaseModel, Field
-
+from pydantic import Field
 
 Category = Literal[
     "billing",
@@ -63,5 +63,6 @@ class FinalResult(BaseModel):
     draft_response: str
     trust_score: int
     decision: Decision
+    evidence: list[str] = Field(default_factory=list)
     reason: str
     escalation_note: Optional[str] = None

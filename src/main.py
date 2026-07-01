@@ -69,6 +69,7 @@ def process_ticket(ticket_id: str, customer_message: str, mode: str = "rule") ->
         draft_response=draft.response,
         trust_score=judge.trust_score,
         decision=judge.decision,
+        evidence=judge.evidence,
         reason=judge.reason,
         escalation_note=escalation_note,
     )
@@ -83,6 +84,9 @@ def print_result(result: FinalResult) -> None:
     console.print(f"[bold]Risk level:[/bold] {result.risk_level}")
     console.print(f"[bold]Trust score:[/bold] {result.trust_score}")
     console.print(f"[bold]Decision:[/bold] {result.decision}")
+    console.print(
+        f"[bold]Evidence:[/bold] {', '.join(result.evidence)}"
+    )   
     console.print(f"[bold]Reason:[/bold] {result.reason}")
     console.print()
     console.print(Panel(result.draft_response, title="Draft Response"))
