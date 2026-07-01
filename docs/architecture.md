@@ -20,6 +20,10 @@ Draft Response Agent
 ↓
 Judge Agent
 ↓
+Reflection Agent
+↓
+Judge Agent (Re-evaluation)
+↓
 Trust Gate
 ↓
 Final Decision
@@ -96,21 +100,44 @@ triage_result
 draft_response
 policy_text
 
-It produces a structured `JudgeResult`:
+It produces a structured JudgeResult:
 
-helpfulness
-policy_compliance
-hallucination_risk
-risk_level
-trust_score
-decision
-reason
+- helpfulness
+- policy_compliance
+- hallucination_risk
+- risk_level
+- trust_score
+- evidence
+- decision
+- reason
 
-The Judge Agent is responsible for deciding whether the draft is safe enough to suggest directly.
+The Judge Agent performs policy-grounded evaluation, evidence generation, and trust re-scoring after reflection.
 
 ---
 
-### 5. Trust Gate
+### 5. Reflection Agent
+
+The Reflection Agent is triggered when a response falls below the trust threshold.
+
+It receives:
+
+- customer_message
+- triage_result
+- draft_response
+- judge_result
+- policy_text
+
+It produces:
+
+- revised draft response
+- revision count
+
+The goal is to improve response safety and add additional verification language before re-evaluation.
+
+Revised responses are sent back to the Judge Agent for a second evaluation pass.
+
+
+### 6. Trust Gate
 
 The Trust Gate uses the judge output to make the final routing decision.
 
@@ -127,11 +154,11 @@ Current MVP behavior:
 - high risk → escalate
 - security/privacy → always escalate
 
-This can be extended later with more nuanced scoring.
+Responses below the trust threshold are first routed through the Reflection Agent and then re-evaluated before final routing.
 
 ---
 
-### 6. Escalation Agent
+### 7. Escalation Agent
 
 The Escalation Agent creates an internal note for a human support specialist.
 
@@ -153,6 +180,8 @@ Aegis uses structured objects as messages between agents.
 Triage Agent → TriageResult
 Draft Agent → DraftResult
 Judge Agent → JudgeResult
+Reflection Agent → Revised DraftResult
+Judge Agent → Updated JudgeResult
 Pipeline → FinalResult
 
 This is an A2A-style pattern because each agent communicates with the next through explicit structured outputs.
@@ -190,6 +219,7 @@ In a production version, this could become a real MCP server connected to:
 - security reporting workflow
 
 ---
+
 
 ## Safety and Human-in-the-Loop Design
 

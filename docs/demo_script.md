@@ -46,9 +46,15 @@ Draft Response Agent
 ↓
 Judge Agent
 ↓
+Reflection Agent
+↓
+Judge Agent (Re-evaluation)
+↓
 Trust Gate
 ↓
 Final Decision
+
+
 The final decision can be:
 
 suggest_reply
@@ -65,8 +71,10 @@ Aegis demonstrates:
 - MCP-style tool use
 - A2A-style structured message passing
 - policy grounding
-- judge agent evaluation
-- trust scoring
+- reflection and self-correction
+- evidence-based judging
+- trust re-scoring
+- explainable trust scoring
 - human-in-the-loop escalation
 - evaluation harness
 - error analysis
@@ -83,8 +91,12 @@ Expected behavior:
 
 - Category: billing
 - Risk level: medium
-- Decision: human_review
-- Reason: refund or duplicate charge needs verification
+- Policy loaded
+- Policy-grounded evidence generated
+- Reflection loop triggered
+- Draft revised and re-evaluated
+- Trust score improved from 72 to 87
+- Final decision: human_review
 
 Explain:
 
