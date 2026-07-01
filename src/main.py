@@ -35,10 +35,12 @@ def process_ticket(ticket_id: str, customer_message: str, mode: str = "rule") ->
     policy = policy_lookup(triage.category)
     draft = draft_func(customer_message, triage, policy)
     judge = judge_func(customer_message, triage, draft, policy)
+
         # Reflection Loop
-
-    if judge.trust_score < 70:
-
+    if (
+        judge.trust_score < 80
+        and triage.category not in ["security", "privacy"]
+    ):
         draft = revise_response(
             customer_message,
             triage,

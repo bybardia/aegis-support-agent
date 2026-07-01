@@ -93,18 +93,24 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
     helpfulness = 8
     policy_compliance = 8
     hallucination_risk = 2
+    revision_bonus = 0
+
+    if getattr(draft, "revision_count", 0) > 0:
+        revision_bonus = 15   
     evidence = []
 
     if risk_level == "high":
-        trust_score = 45
+        trust_score = min(100, 45 + revision_bonus)
         decision = "escalate"
         reason = "High-risk issue requires human specialist review."
+
     elif risk_level == "medium":
-        trust_score = 72
+        trust_score = min(100, 72 + revision_bonus)
         decision = "human_review"
         reason = "Medium-risk issue should be reviewed before final customer action."
+
     else:
-        trust_score = 88
+        trust_score = min(100, 88 + revision_bonus)
         decision = "suggest_reply"
         reason = "Low-risk issue can receive a suggested support reply."
 
@@ -138,7 +144,11 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
 
     if decision == "suggest_reply":
         evidence.append("safe suggested reply allowed")    
-
+        
+    if getattr(draft, "revision_count", 0) > 0:
+        evidence.append(
+            f"response revised {draft.revision_count} time(s)"
+        )
     return JudgeResult(
         helpfulness=helpfulness,
         policy_compliance=policy_compliance,
