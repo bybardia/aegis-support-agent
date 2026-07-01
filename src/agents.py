@@ -93,6 +93,7 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
     helpfulness = 8
     policy_compliance = 8
     hallucination_risk = 2
+    evidence = []
 
     if risk_level == "high":
         trust_score = 45
@@ -112,6 +113,32 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
         trust_score = min(trust_score, 45)
         reason = "Security or privacy issue must be escalated according to policy."
 
+    # Evidence collection
+
+    evidence.append(f"category={category}")
+    evidence.append(f"risk_level={risk_level}")
+
+    if "refund" in customer_message.lower():
+        evidence.append("refund request detected")
+
+    if "charged twice" in customer_message.lower():
+        evidence.append("duplicate charge detected")
+
+    if category == "security":
+        evidence.append("security policy escalation triggered")
+
+    if category == "privacy":
+        evidence.append("privacy policy escalation triggered")
+
+    if decision == "human_review":
+        evidence.append("human review required")
+
+    if decision == "escalate":
+        evidence.append("escalation required")
+
+    if decision == "suggest_reply":
+        evidence.append("safe suggested reply allowed")    
+
     return JudgeResult(
         helpfulness=helpfulness,
         policy_compliance=policy_compliance,
@@ -119,6 +146,7 @@ def judge_response(customer_message: str, triage: TriageResult, draft: DraftResu
         risk_level=risk_level,
         trust_score=trust_score,
         decision=decision,
+        evidence=evidence,
         reason=reason,
     )
 
