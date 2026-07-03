@@ -1,6 +1,5 @@
 from typing import Literal, Optional
 from pydantic import BaseModel, Field
-from pydantic import Field
 
 Category = Literal[
     "billing",
@@ -25,27 +24,24 @@ class TriageResult(BaseModel):
 
 
 class DraftResult(BaseModel):
-    response: str = Field(
-        ...,
-        description="Draft response to the customer."
-    )
-
+    response: str = Field(..., description="Draft response to the customer.")
     revision_count: int = Field(
         default=0,
-        description="Number of revisions made by the reflection loop."
+        description="Number of revisions made by the reflection loop.",
     )
 
+
 class JudgeResult(BaseModel):
-    helpfulness: int = Field(..., ge=1, le=10, description="How helpful the draft is.")
-    policy_compliance: int = Field(..., ge=1, le=10, description="How well the draft follows policy.")
-    hallucination_risk: int = Field(..., ge=1, le=10, description="Risk that the draft invents facts.")
+    helpfulness: int = Field(..., ge=0, le=10, description="How helpful the draft is.")
+    policy_compliance: int = Field(..., ge=0, le=10, description="How well the draft follows policy.")
+    hallucination_risk: int = Field(..., ge=0, le=10, description="Risk that the draft invents facts.")
     risk_level: RiskLevel = Field(..., description="Final risk level after judging.")
     trust_score: int = Field(..., ge=0, le=100, description="Overall confidence score.")
     decision: Decision = Field(..., description="Final routing decision.")
     evidence: list[str] = Field(
-    default_factory=list,
-    description="Evidence used to justify the judge decision."
-)
+        default_factory=list,
+        description="Evidence used to justify the judge decision.",
+    )
     reason: str = Field(..., description="Reason for the decision.")
 
 
